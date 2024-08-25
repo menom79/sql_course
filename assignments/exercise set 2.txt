@@ -1,0 +1,53 @@
+Query 1
+-- Select employees who live in Winnipeg.
+Select * from emps where city="winnipeg";
+
+Query 2
+-- Select firstname and surname of employees whose firstname starts with MI.
+Select GNAME, SURNAME from emps where GNAME like "MI%";
+
+Query 3
+-- Select employees (firstname and surname) whose employee number is between 50 and 70.
+Select GNAME, SURNAME from emps where EMPNUM between 50 and 70;
+
+Query 4
+-- Select employees whose rate value is greater than 9 and employee number lower than 150.
+Select * from emps where RATE >9 and EMPNUM <150;
+
+Query 5
+--Select employees whose phonenumber's third number is 7 and who come from Edmonton or Newton.
+Select * from emps where PHONE like "__7%" and (city="Edmonton" or city="Newton");
+
+Query 6
+-- Select all different cities and show the result set in descending order.
+Select distinct city from emps order by city desc;
+
+Query 7
+-- Select employees whose department is not A, B or C. Try to find three different ways to create this query. What choice would you prefer from these three?
+Select * from emps where DEPT <>"A" and DEPT <>"B" and DEPT <>"C";
+Select * from emps where DEPT>="D"; (Preferred choice)
+Select * from emps where not DEPT between "A" and "C";
+
+Query 8
+-- Select all departments, but show only five departments starting from tenth row.
+Select * from dept limit 5 offset 9;
+
+Query 9
+-- Select departments with budget between 57000 and 93000. Set column name as Limited.
+Select DEPT as Limited from dept where BUDGET=57000 or BUDGET=9300;
+
+Query 10
+-- Select department having ABEY M as a manager.
+Select manager from dept where manager="Abey M";
+
+Query 11
+-- Select departments having manager name starting with letter S and budget greater than 100000.
+Select * from dept where MANAGER like "S%" and BUDGET > 100000;
+
+Query 12
+-- Select departments with DEPT not being between H-T. DEPT and manager should be included in the result set.
+Select DEPT, MANAGER from dept where not dept between "H" and "T";
+
+Query 13
+-- Select employees whose firstnames second letter is A, last letter in surname is N and computer (PC) starts with string T0.
+Select * from emps where GNAME like "_A%" and SURNAME like "%N" and PC like "T0%";

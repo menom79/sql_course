@@ -1,0 +1,65 @@
+Query a
+-- Select all groceries from the category of your choice.
+
+select * 
+from products
+where CategoryId = 2;
+
+Query b
+-- Select groceries with first letter in the name being between A-M.
+
+select * 
+from products
+where ProductName REGEXP '^[A-M]';
+
+Query c
+-- Select groceries that are missing the price information.
+
+select *
+from products
+where price is null;
+
+Query d
+-- Select customers who have made more than one online order.
+
+select c.customerId, c.customername
+from customer as c join orders as o
+on c.customerId = o.customerid
+where count(o.orderid) > 1;
+
+Query e
+-- Create a receipt of one online order of your choice. Receipt should include customer name, 
+order number, the order creation date and the pickup date for the order.
+
+select c.customerName, o.orderId, o.orderDate, o.DeliveryDate
+from customer as c join orders as o
+on c.customerId = o.customerId
+where o.orderId = 1;
+
+Query f
+-- Select all orders that have been made more than a week ago.
+
+select * 
+from orders
+where orderdate > DATE_SUB(CURDATE(), INTERVAL -1 WEEK);
+
+Query g
+-- Show the storage count for all groceries in total for each grocery store (how many 
+groceries are stored in each grocery stores storage).
+
+select sum(InStock), s.storeId as StoreId
+from products join category
+on products.CategoryId = category.CategoryId
+join store as s
+on category.StoreId = s.StoreId
+group by StoreId;
+
+Query h
+-- Count the total price of all groceries within one customer order of your choice.
+SELECT 
+	SUM(quantityOrdered * priceEach)  orderTotal, c.customerId
+FROM
+	orderdetails join orders
+    on orderdetails.OrderId = orders.OrderId
+    join customer as c
+    on orders.CustomerId = c.CustomerId;

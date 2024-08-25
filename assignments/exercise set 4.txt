@@ -1,0 +1,68 @@
+Query 1 
+--Select employees who work on department A and create a column where employee names are presented in a following format: Surname First_letter_of_firstname (For example Johnson B). Order result set by surname. In addition for this new name column, present department Duty in the result set.
+
+Select concat(SURNAME, " ", SUBSTRING(GNAME,1,1)) as NAME, Duty from emps join dept on emps.DEPT = dept.DEPT where emps.DEPT = "A" order by SURNAME; 
+
+Query 2
+--Select all employees and include also those who don't have department set. Include firstname, surname, department and duty of department in the result set. (Please notice that by default all employees have department set so this query won't return any rows with default data!)
+
+Select GNAME as firstname, SURNAME as surname, emps.DEPT as dept, DUTY as duty from emps left join dept on emps.DEPT = dept.DEPT;
+
+Query 3
+--Select employees who have MB as a province (PROV) and whose manager is Black D. Present employee number and whole name in the result set.
+
+Select e.empnum, e.gname, e.surname from emps e join dept d on e.dept = d.dept 
+where e.prov = "MB" and d.manager = "BLACK D"
+
+Query 4
+--Select all managers who have more than 10 employees on their department. Present manager and employee count in the result set. Order result set by employee count in descending order.
+
+Select MANAGER, count(distinct concat(GNAME, " ",SURNAME)) as employee_count from dept
+inner join emps on dept.DEPT = emps.DEPT group by MANAGER having employee_count > 10  order by employee_count desc;
+
+Query 5
+--Create two columns for the result set: One for employees so that employee name is presented in the following format: Firstname Surname (for example Mike Johnson) and another which tells whether the person is an employee or a manager. Give columns the following names for the result set: Name and Type. Order results primarily by type and secondarily by name.
+
+select concat(GNAME, " ", SURNAME) as Name,
+case 
+when exists (select distinct MANAGER from dept where MANAGER = concat(SURNAME, " ",left(GNAME,1))) then "MANAGER"
+else "Employee" 
+end as Type
+from emps order by Type, Name;
+
+Query 6
+--Use UNION to combine the following two queries: Select employees whose department is between A-D and employees whose firstname starts with letter B. Include department, firstname, surname and city in the result set.
+
+Select dept, gname, surname, city from emps where dept >= "A" and dept <= "D" union select dept, gname, surname, city from emps where gname like "B%";
+
+Query 7
+--Use both UNION and JOIN and get the following information in one result set:
+Employees who work in department having budget between 50000-100000
+Employees whose computer identifier (PC) starts with letter T
+Result set should include department, budget, employees firstname and surname as well as computer's identifier
+Result set should be in ascending order by department
+
+select e.dept, e.gname, e.surname, d.budget from emps e join dept d on e.dept = d.dept where budget >= 50000 and budget <= 100000 union select e.dept, e.gname, e.surname, d.budget from emps e join dept d on e.dept = d.dept where pc like "T%" order by dept;
+
+Query 8
+--Select employees working in department A who have different rate value than any employees in department B. Tip: Use IN subquery!
+
+select empnum, gname, surname, rate, dept from emps where dept = "A" and rate not in (select rate from emps where dept = "B");
+
+Query 9
+--Select employees whose department's duty is same as the employee Peter Curry. Result set should include department, duty and the firstname and surname of employee.
+
+Select e.gname, e.surname, e.dept, d.duty from emps 
+e join dept d on e.dept = d.dept where duty = (select d.duty from dept d join emps e on d.dept = e.dept where gname = "Peter" and surname = "Curry");
+
+Query 10
+--Select firstname, surname and phone numbers of employees whose department's duty is marketing or whose department's manager is Mark G.
+
+select gname, surname, phone from emps e join dept d on e.dept = d.dept 
+where duty = "Marketing" union select gname, surname, phone from emps 
+e join dept d on e.dept = d.dept where manager = "Mark G";
+
+Query 11
+--Use subquery to select all employees whose rate value is the greatest possible.
+
+select gname, surname, rate from emps where rate = (select max(rate) from emps);

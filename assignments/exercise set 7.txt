@@ -1,0 +1,82 @@
+Query 1
+--Create two document collections and use SQL table structure presented above as a reference. 
+Add at least five rows of data to both document collections. Important: Mongo documents must 
+have _id as primary key so use it (dept and empnum will be normal key values)!
+
+db.createCollection('dept')
+db.createCollection('emps')
+
+dept1 = ObjectId()
+dept2 = ObjectId()
+dept3 = ObjectId()
+dept4 = ObjectId()
+dept5 = ObjectId()
+
+db.dept.insertOne(
+   { _id: dept1, dept: "ECE", manager: "Hashim", duty: "strict", budget: 12324.5 }
+)
+
+db.dept.insertOne(
+   { _id: dept2, dept: "ECE", manager: "Hashim", duty: "strict", budget: 12342.5 }
+)
+
+db.dept.insertOne(
+   { _id: dept3, dept: "ECE", manager: "Hashim", duty: "strict", budget: 1232.5 }
+)
+
+db.dept.insertOne(
+   { _id: dept4, dept: "ECE", manager: "Hashim", duty: "strict", budget: 156782.5 }
+)
+
+db.dept.insertOne(
+   { _id: dept5, dept: "ECE", manager: "Hashim", duty: "strict", budget: 1562.5 }
+)
+
+
+emp1 = ObjectId()
+emp2 = ObjectId()
+emp3 = ObjectId()
+emp4 = ObjectId()
+emp5 = ObjectId()
+
+db.emps.insertOne(
+   { empnum: 1, dept: dept1, surname: "Neal", gname: "Reginald", address: "221 B Baker St", city: "Purana Paltan", prov: "Andhra, pc: "64bit", phone: "21212121", rate: 454.54, taxcode: 787, deduction: 1}
+)
+
+db.emps.insertOne(
+   { empnum: 2, dept: dept2, surname: "Fleming", gname: "Marguerite", address: "221 B Baker St", city: "Purana Paltan", prov: "Andhra, pc: "64bit", phone: "21212121", rate: 784.54, taxcode: 788, deduction: 12}
+)
+
+db.emps.insertOne(
+   { empnum: 3, dept: dept3, surname: "Crawford", gname: "Luis", address: "221 B Baker St", city: "Purana Paltan", prov: "Andhra, pc: "64bit", phone: "21212121", rate: 265.00, taxcode: 987, deduction: 13}
+)
+
+db.emps.insertOne(
+   { empnum: 4, dept: dept4, surname: "Scott", gname: "Wendy", address: "221 B Baker St", city: "Purana Paltan", prov: "Andhra, pc: "64bit", phone: "21212121", rate: 5487.21, taxcode: 487, deduction: 31}
+)
+
+db.emps.insertOne(
+   { empnum: 5, dept: dept5, surname: "Elliott", gname: "Grady", address: "221 B Baker St", city: "Purana Paltan", prov: "Andhra, pc: "64bit", phone: "21212121", rate: 9658.50, taxcode: 757, deduction: 21}
+)
+
+
+Query 2 
+Create the following queries:
+
+--a. Select all departments.
+
+db.dept.find()
+
+--b. Select employees whose rate value is greater than 9. Order results by rate value so that 
+smallest value is presented first.
+
+db.emps.find( { rate: { $gt: 9 } } ).sort( { "rate": 1} )
+
+--c. Select employees whose rate value is between 8-12. Order results by rate value so that 
+greatest value is presented first.
+
+db.emps.find( { rate: { $gt: 8, $lt: 12 } } ).sort( { "rate": -1} )
+
+--d. Select employees whose department is not A, B or C.
+
+db.emps.find( { rate: { $nin: ["A", "B", "C"] } } )

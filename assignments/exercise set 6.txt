@@ -1,0 +1,42 @@
+Query 1
+-- Insert two new rows for SALARIES table:
+   3500 euros for employee 10
+   3300 euros for employee 20
+
+INSERT INTO salaries (salaryid, salary)
+	VALUES ('10', '3500'),
+		('20', '3300');
+
+Query 2
+-- Change the salary for employee 20 so that it will be 3600 euros.
+
+UPDATE salaries
+	SET salary = 3600
+	WHERE salaryid = 20;
+
+Query 3
+-- Create a new table called SALARYHISTORY with similar structure as SALARIES table.
+
+CREATE TABLE SALARYHISTORY AS
+    SELECT * FROM salaries
+    limit 0;
+
+Query 4
+-- Copy the content of SALARIES table to SALARYHISTORY with one query.
+
+INSERT INTO SALARYHISTORY (Salaryid, salary)
+	SELECT Salaryid, salary
+	FROM Salaries;
+
+Query 5
+-- Remove the rows referring to employee 20 from SALARIES and SALARYHISTORY tables.
+
+Begin;
+
+	DELETE FROM Salaries
+	WHERE salaryid = 20;
+
+	DELETE FROM SALARYHISTORY
+	WHERE salaryid = 20;
+
+COMMIT;

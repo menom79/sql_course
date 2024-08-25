@@ -1,0 +1,66 @@
+Query 1
+-- Create a new table called SALARIES with the following columns:
+salaryID (primary key)
+salary (the amount of salary described with two decimals)
+
+Create table SALARIES
+(
+SalaryID INT not null,
+Salary decimal(10,2),
+Primary key (salaryID)
+);
+
+Query 2
+-- Create a connection between SALARIES and EMPS tables (Tip: First think what column you 
+should bring from EMPS table and then create a new column for it). Use the following options 
+in foreign key definition:
+
+UPDATE CASCADE
+DELETE NO ACTION
+
+Alter table salaries
+Add column EMPNUM decimal(3,0);
+
+ALTER TABLE salaries
+ADD FOREIGN KEY (empnum) REFERENCES emps(empnum) on update cascade on delete no action;
+
+Query 3
+-- Add a new column called fromdate. The current date should be added automatically for this 
+column when new data is inserted.
+
+Alter table salaries
+Add column fromdate date default current_timestamp;
+
+Query 4
+-- Add automatic counter for salaryID column so that this field value will be automatically 
+generated each time a new data is inserted.
+
+Alter table salaries 
+modify SalaryID INT not null auto_increment;
+
+Query 5
+-- Create input validation check with TRIGGER so that salaries exceeding 10000 euros cannot 
+be inserted to the table.
+
+DELIMITER $$
+CREATE TRIGGER check_salary BEFORE INSERT ON salaries
+FOR EACH ROW
+    BEGIN
+        IF NEW.salary > 10000
+            THEN SET NEW.salary = null;
+        END if;
+    END $$
+
+Query 6
+-- Modify previously created input validation so that inserted value must also be even 
+(num % 2 = 0). Important: Trigger cannot be modified so you will need to drop the existing 
+trigger and create a new one.
+
+DELIMITER $$
+CREATE TRIGGER check_salary2 BEFORE INSERT ON salaries
+FOR EACH ROW
+    BEGIN
+        IF NEW.salary % 2 != 0
+            THEN SET NEW.salary = null;
+        END if;
+    END $$
